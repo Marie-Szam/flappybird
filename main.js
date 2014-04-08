@@ -17,7 +17,9 @@ var main_state = {
      //Display the bird on the screen 
      this.bird = this.game.add.sprite(100, 245, 'bird');
      //Add gravity to the bird to make it fall
-     this.bird.body.gravity.y = 1000;   
+     this.bird.body.gravity.y = 1000;
+
+     this.bird.anchor.setTo(-0.2, 0.5);   
 
      //Call the 'jump' function when the spacekey is hit
      var space_key = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -30,7 +32,9 @@ var main_state = {
 
      this.score = 0;  
     var style = { font: "30px Arial", fill: "#ffffff" };  
-    this.label_score = this.game.add.text(20, 20, "0", style);   
+    this.label_score = this.game.add.text(20, 20, "0", style);
+
+
     },
     
     update: function() {
@@ -39,13 +43,25 @@ var main_state = {
           if (this.bird.inWorld == false)
                this.restart_game();
 
-           this.game.physics.overlap(this.bird, this.pipes, this.restart_game, null, this);  
+           this.game.physics.overlap(this.bird, this.pipes, this.restart_game, null, this);
+
+           if (this.bird.angle < 20)  
+            this.bird.angle += 1;  
     },
 
     // Make the bird jump 
 jump: function() {  
     // Add a vertical velocity to the bird
     this.bird.body.velocity.y = -350;
+
+    // create an animation on the bird
+var animation = this.game.add.tween(this.bird);
+
+// Set the animation to change the angle of the sprite to -20° in 100 milliseconds
+animation.to({angle: -20}, 100);
+
+// And start the animation
+animation.start(); 
 },
 
 // Restart the game
